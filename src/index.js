@@ -50,6 +50,7 @@ process.on("SIGINT", function() {
   });
 });
 
+// Cluster
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
 

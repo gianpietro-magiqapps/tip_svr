@@ -6,20 +6,20 @@ const Candidate = mongoose.model("Candidate");
 const router = express.Router();
 
 router.get("/candidates", async (req, res) => {
-  const partyId = req.query.partyId || null;
+  const { page = 1, limit = 10 } = req.query;
 
-  const candidates = partyId
-    ? await Candidate.find({ party: partyId })
-        .populate("party")
-        .sort({
-          role: "asc",
-        })
-    : await Candidate.find()
-        .populate("party")
-        .sort({
-          name: "asc",
-        });
-  res.send(candidates);
+  const candidates = await Candidate.find()
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
+    .exec();
+
+  const count = await Candidate.countDocuments();
+
+  res.json({
+    candidates,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+  });
 });
 
 router.get("/candidates/:id", async (req, res) => {
@@ -28,11 +28,6 @@ router.get("/candidates/:id", async (req, res) => {
 });
 
 router.post("/candidates", async (req, res) => {
-  const { name } = req.body;
-  if (!name) {
-    return res.status(422).send({ error: "You must provide a name" });
-  }
-
   try {
     const candidate = new Candidate(req.body);
     await candidate.save();
