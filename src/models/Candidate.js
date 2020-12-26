@@ -1,239 +1,250 @@
 const mongoose = require("mongoose");
 
+const linksSchema = new mongoose.Schema(
+  {
+    imagen: String,
+    resumen: String,
+    hoja_vida: String,
+  },
+  { _id: false }
+);
+
+const annotationsSchema = new mongoose.Schema(
+  {
+    anotacion_numero: String,
+    expediente_numero: String,
+    informe_numero: String,
+    documento_numero: String,
+    documento_identidad: String,
+    dice: String,
+    debe_decir: String,
+  },
+  { _id: false }
+);
+
+const trajectorySchema = new mongoose.Schema(
+  {
+    dni: String,
+    eleccion: String,
+    lugar: String,
+    cargo: String,
+    org_politica: String,
+    resultado: String,
+  },
+  { _id: false }
+);
+
+const additionalInfoSchema = new mongoose.Schema(
+  {
+    info: String,
+  },
+  { _id: false }
+);
+
+const assetsSchema = new mongoose.Schema(
+  {
+    bienes_otros: Array,
+    bienes_muebles: Array,
+    bienes_inmuebles: Array,
+  },
+  { _id: false }
+);
+
+const incomeSchema = new mongoose.Schema(
+  {
+    remuneracion_bruta_publico: String,
+    remuneracion_bruta_privado: String,
+    renta_individual_publico: String,
+    renta_individual_privado: String,
+    otro_ingreso_publico: String,
+    otro_ingreso_privado: String,
+    total_remuneracion_bruta: String,
+    total_renta: String,
+    total_otro: String,
+    total: String,
+    total_privado: String,
+    total_publico: String,
+  },
+  { _id: false }
+);
+
+const judgementsCivilSchema = new mongoose.Schema(
+  {
+    materia_sentencia: String,
+    expediente_obliga: String,
+    organo_judicial_obliga: String,
+    fallo_obliga: String,
+  },
+  { _id: false }
+);
+
+const judgementsCriminalSchema = new mongoose.Schema(
+  {
+    expediente_penal: String,
+    organo_judicial_penal: String,
+    delito_penal: String,
+    fallo_penal: String,
+    modalidad: String,
+    cumple_fallo: String,
+  },
+  { _id: false }
+);
+
+const judgementsSchema = new mongoose.Schema(
+  {
+    sentencias_penales: [judgementsCriminalSchema],
+    sentencias_civiles: [judgementsCivilSchema],
+  },
+  { _id: false }
+);
+
+const experienceWorkSchema = new mongoose.Schema(
+  {
+    centro_trabajo: String,
+    ocupacion_profesion: String,
+    anio_desde: Number,
+    anio_hasta: Number,
+    hasta_actualidad: Boolean,
+  },
+  { _id: false }
+);
+
+const experienceElectionsSchema = new mongoose.Schema(
+  {
+    org_politica: String,
+    cargo: String,
+    anio_desde: Number,
+    anio_hasta: Number,
+    hasta_actualidad: Boolean,
+  },
+  { _id: false }
+);
+
+const experiencePartySchema = new mongoose.Schema(
+  {
+    org_politica: String,
+    cargo: String,
+    anio_desde: Number,
+    anio_hasta: Number,
+    hasta_actualidad: Boolean,
+  },
+  { _id: false }
+);
+
+const experienceQuitSchema = new mongoose.Schema(
+  {
+    org_politica: String,
+    anio: Number,
+  },
+  { _id: false }
+);
+
+const experienceSchema = new mongoose.Schema(
+  {
+    laboral: [experienceWorkSchema],
+    cargos_elecciones: [experienceElectionsSchema],
+    cargos_partidarios: [experiencePartySchema],
+    renuncias: [experienceQuitSchema],
+  },
+  { _id: false }
+);
+
+const educationBasicSchema = new mongoose.Schema(
+  {
+    tiene_basica: Boolean,
+    tiene_primaria: Boolean,
+    primaria_concluida: Boolean,
+    tiene_secundaria: Boolean,
+    secundaria_concluida: Boolean,
+  },
+  { _id: false }
+);
+
+const educationTechnicalSchema = new mongoose.Schema(
+  {
+    centro_estudio: String,
+    carrera: String,
+    concluida: Boolean,
+  },
+  { _id: false }
+);
+
+const educationNonUniversitySchema = new mongoose.Schema(
+  {
+    centro_estudio: String,
+    carrera: String,
+    concluida: Boolean,
+  },
+  { _id: false }
+);
+
+const educationUniversitySchema = new mongoose.Schema(
+  {
+    centro_estudio: String,
+    carrera: String,
+    concluida: Boolean,
+    bachiller: Boolean,
+    titulo: Boolean,
+  },
+  { _id: false }
+);
+
+const educationPostGraduateSchema = new mongoose.Schema(
+  {
+    centro_estudio: String,
+    especialidad: String,
+    concluida: Boolean,
+    egresado: Boolean,
+  },
+  { _id: false }
+);
+
+const educationSchema = new mongoose.Schema(
+  {
+    basica: educationBasicSchema,
+    tecnica: [educationTechnicalSchema],
+    no_universitaria: [educationNonUniversitySchema],
+    universitaria: [educationUniversitySchema],
+    postgrado: [educationPostGraduateSchema],
+  },
+  { _id: false }
+);
+
 const candidateSchema = new mongoose.Schema({
-  hoja_vida_id: {
-    type: {
-      type: "String",
-    },
-    minimum: {
-      type: "Number",
-    },
-    maximum: {
-      type: "Number",
-    },
-  },
-  id_dni: {
-    oneOf: {
-      type: ["Mixed"],
-    },
-  },
-  id_ce: {
-    oneOf: {
-      type: ["Mixed"],
-    },
-  },
-  id_nombres: {
-    type: {
-      type: "String",
-    },
-  },
-  id_apellido_paterno: {
-    type: {
-      type: "String",
-    },
-  },
-  id_apellido_materno: {
-    type: {
-      type: "String",
-    },
-  },
-  id_sexo: {
-    type: {
-      type: "String",
-    },
-  },
-  nacimiento_fecha: {
-    type: {
-      type: "String",
-    },
-  },
-  nacimiento_pais: {
-    type: {
-      type: "String",
-    },
-  },
-  nacimiento_departamento: {
-    type: {
-      type: "String",
-    },
-  },
-  nacimiento_provincia: {
-    type: {
-      type: "String",
-    },
-  },
-  nacimiento_distrito: {
-    type: {
-      type: "String",
-    },
-  },
-  postula_ubigeo: {
-    type: {
-      type: "String",
-    },
-  },
-  postula_departamento: {
-    type: {
-      type: "String",
-    },
-  },
-  postula_provincia: {
-    type: {
-      type: "String",
-    },
-  },
-  postula_distrito: {
-    type: {
-      type: "String",
-    },
-  },
-  cargo_id: {
-    type: {
-      type: "String",
-    },
-    minimum: {
-      type: "Number",
-    },
-    maximum: {
-      type: "Number",
-    },
-  },
-  cargo_nombre: {
-    type: {
-      type: "String",
-    },
-  },
-  org_politica_id: {
-    type: {
-      type: "String",
-    },
-    minimum: {
-      type: "Number",
-    },
-    maximum: {
-      type: "Number",
-    },
-  },
-  org_politica_nombre: {
-    type: {
-      type: "String",
-    },
-  },
-  educacion: {
-    $ref: {
-      type: "String",
-    },
-  },
-  experiencia: {
-    $ref: {
-      type: "String",
-    },
-  },
-  sentencias: {
-    $ref: {
-      type: "String",
-    },
-  },
-  ingresos: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  bienes: {
-    $ref: {
-      type: "String",
-    },
-  },
-  info_adicional: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  contraloria: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  redam: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  servir: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  trayectorias: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  revocatoria: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  vacancia: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  anotaciones_marginales: {
-    type: {
-      type: "String",
-    },
-    items: {
-      $ref: {
-        type: "String",
-      },
-    },
-  },
-  enlaces: {
-    $ref: {
-      type: "String",
-    },
-  },
+  hoja_vida_id: Number,
+  id_dni: Object,
+  id_ce: Object,
+  id_nombres: String,
+  id_apellido_paterno: String,
+  id_apellido_materno: String,
+  id_sexo: String,
+  nacimiento_fecha: String,
+  nacimiento_pais: String,
+  nacimiento_departamento: String,
+  nacimiento_provincia: String,
+  nacimiento_distrito: String,
+  postula_ubigeo: String,
+  postula_departamento: String,
+  postula_provincia: String,
+  postula_distrito: String,
+  cargo_id: Number,
+  cargo_nombre: String,
+  org_politica_id: Number,
+  org_politica_nombre: String,
+  educacion: educationSchema,
+  experiencia: experienceSchema,
+  sentencias: judgementsSchema,
+  ingresos: [incomeSchema],
+  bienes: assetsSchema,
+  info_adicional: [additionalInfoSchema],
+  contraloria: Array,
+  redam: Array,
+  servir: Array,
+  trayectorias: [trajectorySchema],
+  revocatoria: Array,
+  vacancia: Array,
+  anotaciones_marginales: [annotationsSchema],
+  enlaces: linksSchema,
 });
 
 mongoose.model("Candidate", candidateSchema);
