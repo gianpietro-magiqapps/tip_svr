@@ -23,7 +23,27 @@
     "/candidates": {
       "get": {
         "summary": "Returns a list of candidates.",
-        "description": "Returns a list of candidates.",
+        "description": "Returns a list of candidates. Accepts 'page' and 'limit' as query parameters",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page number in integer",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Number of entries to return",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false
+          }          
+        ],
         "consumes": [
           "application/json"
         ],
