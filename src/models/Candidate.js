@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const m2s = require("mongoose-to-swagger");
 
 const linksSchema = new mongoose.Schema(
   {
@@ -43,9 +44,9 @@ const additionalInfoSchema = new mongoose.Schema(
 
 const assetsSchema = new mongoose.Schema(
   {
-    bienes_otros: Array,
-    bienes_muebles: Array,
-    bienes_inmuebles: Array,
+    bienes_otros: { type: Array },
+    bienes_muebles: { type: Array },
+    bienes_inmuebles: { type: Array },
   },
   { _id: false }
 );
@@ -234,17 +235,19 @@ const candidateSchema = new mongoose.Schema({
   educacion: educationSchema,
   experiencia: experienceSchema,
   sentencias: judgementsSchema,
-  ingresos: [incomeSchema],
+  ingresos: { type: Array, items: incomeSchema },
   bienes: assetsSchema,
-  info_adicional: [additionalInfoSchema],
-  contraloria: Array,
-  redam: Array,
-  servir: Array,
-  trayectorias: [trajectorySchema],
-  revocatoria: Array,
-  vacancia: Array,
-  anotaciones_marginales: [annotationsSchema],
+  info_adicional: { type: Array, items: additionalInfoSchema },
+  contraloria: { type: Array },
+  redam: { type: Array },
+  servir: { type: Array },
+  trayectorias: { type: Array, items: trajectorySchema },
+  revocatoria: { type: Array },
+  vacancia: { type: Array },
+  anotaciones_marginales: { type: Array, items: annotationsSchema },
   enlaces: linksSchema,
 });
 
-mongoose.model("Candidate", candidateSchema);
+const Candidate = mongoose.model("Candidate", candidateSchema);
+const swaggerSchema = m2s(Candidate);
+console.log(swaggerSchema);

@@ -4,6 +4,8 @@ const os = require("os");
 const http = require("http");
 const cluster = require("cluster");
 const express = require("express");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const keys = require("./config/keys");
@@ -67,17 +69,21 @@ if (cluster.isMaster) {
   // Express Middleware
   const app = express();
 
+  app.use(cors());
   app.use(bodyParser.json());
   app.use(candidateRoutes);
   app.use(partyRoutes);
 
   // Main routes
   app.get("/", (req, res) => {
-    res.send("Hi there!" + cluster.worker.id);
+    res.send("Hi there! " + cluster.worker.id);
   });
 
-  // Server
+  // Swagger
+  const swaggerDocument = require("./swagger.json");
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+  // Server
   http.createServer(app).listen(process.env.PORT || 3000, function() {
     console.log(
       "Express server listening on port 3000 as Worker " +
