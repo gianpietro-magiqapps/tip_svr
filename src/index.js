@@ -7,7 +7,6 @@ const express = require("express");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const candidateRoutes = require("./routes/candidateRoutes");
 const partyRoutes = require("./routes/partyRoutes");
 
@@ -41,7 +40,7 @@ mongoose.connection.on("error", (err) => {
 // Express Middleware
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(candidateRoutes);
 app.use(partyRoutes);
 
